@@ -27,6 +27,7 @@
 #include   <memory.h>
 #include   <malloc.h>
 #include   <assert.h>
+#include   "PilhadeCartas.h"
 
 #define LISTA_OWN
 #include "LISTA.h"
@@ -623,4 +624,123 @@ LIS_tpCondRet LIS_retornaNumElementos(LIS_tppLista pLista, int *Num){
 		return LIS_CondRetOK;
 	}
 } /* Fim função: LIS  -Retorna Num Elementos */
+
+void LIS_eliminaElemCorr(LIS_tppLista pLista){  // 1
+	LiberarElemento(pLista, pLista->pElemCorr);
+}
+
+void LIS_apontaSucessorNULL(LIS_tppLista pLista){  // 2
+	pLista->pElemCorr->pProx = NULL;
+}
+
+void LIS_apontaPredecessorNULL(LIS_tppLista pLista){  // 3
+	pLista->pElemCorr->pAnt = NULL;
+}
+
+void LIS_apontaSucessorLIXO(LIS_tppLista pLista){  // 4
+	static char EspacoLixo[256] = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
+	pLista->pElemCorr->pProx = (CAR_tpCarta) EspacoLixo;
+}
+
+void LIS_apontaPredecessorLIXO(LIS_tppLista pLista){  // 5
+	static char EspacoLixo[256] = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
+	pLista->pElemCorr->pAnt = (CAR_tpCarta) EspacoLixo;
+}
+
+void LIS_atribuiConteudoNULL(LIS_tppLista pLista){ //Nao esta atribuindo o conteudo para null, mas sim o ponteiro   // 6
+	pLista->pElemCorr->pValor = NULL;
+}
+
+void LIS_alteraEstrutura(LIS_tppLista pLista){  // 7
+	CAR_tpCarta cCarta;
+	CAR_criarCarta(&cCarta);
+	pLista->pElemCorr = (int) cCarta;
+}
+
+void LIS_destacaNo(LIS_tppLista pLista){  // 8
+	tpElemLista *L1;
+	tpElemLista *L2;
+	L1 = pLista->pElemCorr->pAnt;
+	L2 = pLista->pElemCorr->pProx;
+	L1->pProx = L2;
+	L2->pAnt = L1;
+	pLista->pElemCorr->pProx = NULL;
+	pLista->pElemCorr->pAnt = NULL;
+}
+
+void LIS_elemCorrenteNULL(LIS_tppLista pLista){  // 9
+	pLista->pElemCorr = NULL;
+}
+
+void LIS_elemOrigemNULL(LIS_tppLista pLista){  // 10
+	pLista->pOrigemLista = NULL;
+}
+
+LIS_tpCondRet LIS_retornaSuc(LIS_tppLista pLista, tpElemLista **suc){
+	if (pLista->pElemCorr == NULL){
+		*suc = NULL;
+		return LIS_CondRetOK;
+	}
+	*suc = pLista->pElemCorr->pProx;
+	return LIS_CondRetOK;
+}
+
+LIS_tpCondRet LIS_retornaPred(LIS_tppLista pLista, tpElemLista **pred){
+	if (pLista->pElemCorr == NULL){
+		*pred = NULL;
+		return LIS_CondRetOK;
+	}
+	*pred = pLista->pElemCorr->pAnt;
+	return LIS_CondRetOK;
+}
+
+LIS_tpCondRet LIS_retornaCorr(LIS_tppLista pLista, tpElemLista **corr){
+	if (pLista->pElemCorr == NULL){
+		*corr = NULL;
+		return LIS_CondRetOK;
+	}
+	*corr = pLista->pElemCorr;
+	return LIS_CondRetOK;
+}
+
+LIS_tpCondRet LIS_retornaOrigem(LIS_tppLista pLista, tpElemLista **origem){
+	if (pLista->pOrigemLista == NULL){
+		*origem = NULL;
+		return LIS_CondRetOK;
+	}
+	*origem = pLista->pOrigemLista;
+	return LIS_CondRetOK;
+}
+
+LIS_tpCondRet LIS_retornaPValor(LIS_tppLista pLista, CAR_tpCarta *pValor, int qual){
+	if (pLista->pElemCorr == NULL){
+		*pValor = NULL;
+		return LIS_CondRetOK;
+	}
+	if (qual == 0){
+		if (pLista->pElemCorr == NULL){
+			*pValor = NULL;
+			return LIS_CondRetOK;
+		}
+		*pValor = pLista->pElemCorr->pValor;
+	}
+	else if (qual == 1){
+		if (pLista->pElemCorr->pAnt == NULL){
+			*pValor = NULL;
+			return LIS_CondRetOK;
+		}
+		*pValor = pLista->pElemCorr->pAnt->pValor;
+	}
+	else if (qual == 2){
+		if (pLista->pElemCorr->pProx == NULL){
+			*pValor = NULL;
+			return LIS_CondRetOK;
+		}
+		*pValor = pLista->pElemCorr->pProx->pValor;
+	}
+	return LIS_CondRetOK;
+}
+
+
 /********** Fim do módulo de implementação: LIS  Lista duplamente encadeada **********/
+

@@ -53,8 +53,9 @@ typedef enum {
 	PILHA_CondRetNaoEncontrou = 3,
 	/* Não encontrou o valor procurado */
 
-	PILHA_CondRetFaltouMemoria = 4
+	PILHA_CondRetFaltouMemoria = 4,
 	/* Faltou memória ao tentar criar um elemento de lista */
+	PILHA_CondRetErroEstrutura = 5
 
 } PILHA_tpCondRet;
 
@@ -188,6 +189,10 @@ PILHA_tpCondRet PILHA_imprimePilha(PILHA_tpPilha pPilha);
 *
 ***********************************************************************/
 PILHA_tpCondRet PILHA_retornaNumElem(PILHA_tpPilha pPilha, int *num);
+
+PILHA_tpCondRet PILHA_deturpaPilha (PILHA_tpPilha pPilha,int acao);
+
+PILHA_tpCondRet PILHA_verificaNo(PILHA_tpPilha pPilha);
 
 #undef PILHADECARTAS_EXT
 

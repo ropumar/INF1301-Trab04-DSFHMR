@@ -30,6 +30,12 @@
 
 #include"Carta.h"
 #include"LISTA.h"
+#include"CONTA.H"
+#ifdef _DEBUG
+        #include "cespdin.h"
+#endif
+#pragma pack (1)
+#include"TST_ESPC.H"
 
 #define PILHADECARTAS_OWN
 #include "PilhadeCartas.h"
@@ -53,7 +59,9 @@ PILHA_tpCondRet PILHA_criarPilha(PILHA_tpPilha *pPilha){ //Lembrete: a nossa fun
 	LIS_tpCondRet auxiliar;
 	
 	*pPilha = NULL;
+
 	*pPilha = (PILHA_tgPilha*)malloc(sizeof(PILHA_tgPilha));
+
 	if (*pPilha == NULL){
 		return PILHA_CondRetFaltouMemoria;
 	}
@@ -167,15 +175,15 @@ PILHA_tpCondRet PILHA_verificaPilhaVazia(PILHA_tpPilha pPilha){
 *
 ***********************************************************************/
 PILHA_tpCondRet PILHA_imprimePilha(PILHA_tpPilha pPilha){
+	PILHA_tpPilha auxiliar2;
+	CAR_tpCarta cAuxiliar;
+	PILHA_tpPilha auxiliar;
 	char posicao;
 	char face;
 	char naipe;
 
-	PILHA_tpPilha auxiliar;
 	PILHA_criarPilha(&auxiliar);
-	PILHA_tpPilha auxiliar2;
 	PILHA_criarPilha(&auxiliar2);
-	CAR_tpCarta cAuxiliar;
 	CAR_criarCarta(&cAuxiliar);
 
 	if (PILHA_verificaPilhaVazia(pPilha) == PILHA_CondRetPilhaVazia){
@@ -231,4 +239,136 @@ void DestruirCarta(void * pValor)
 	CAR_destruirCarta((CAR_tpCarta)pValor);
 }
 
+
+PILHA_tpCondRet PILHA_deturpaPilha (PILHA_tpPilha pPilha,int acao){
+	
+	if(acao == 1){
+		LIS_eliminaElemCorr(pPilha->topo);
+	}
+	else if(acao == 2){
+		LIS_apontaSucessorNULL(pPilha->topo);
+	}
+	else if(acao == 3){
+		LIS_apontaPredecessorNULL(pPilha->topo);
+	}
+	else if(acao == 4){
+		LIS_apontaSucessorLIXO(pPilha->topo);
+	}
+	else if(acao == 5){
+		LIS_apontaPredecessorLIXO(pPilha->topo);
+	}
+	else if(acao == 6){
+		LIS_atribuiConteudoNULL(pPilha->topo);
+	}
+	else if(acao == 7){
+		LIS_alteraEstrutura(pPilha->topo);
+	}
+	else if(acao == 8){
+		LIS_destacaNo(pPilha->topo);
+	}
+	else if(acao == 9){
+		LIS_elemCorrenteNULL(pPilha->topo);
+	}
+	else if(acao == 10){
+		LIS_elemOrigemNULL(pPilha->topo);
+	}
+	else{
+		//Nao vai deturpar
+		printf("\nAção deturpadora invalida");
+		return PILHA_CondRetNaoEncontrou;
+	}
+
+	return PILHA_CondRetOK;
+
+}
+
+
+PILHA_tpCondRet PILHA_verificaNo(PILHA_tpPilha pPilha){
+	
+	tpElemLista *suc = NULL;
+	tpElemLista *pred = NULL;
+	tpElemLista *corr = NULL;
+	tpElemLista *origem = NULL;
+	CAR_tpCarta pValAnt = NULL;
+	CAR_tpCarta pValProx = NULL;
+	CAR_tpCarta pVal = NULL;
+
+	CAR_tpCarta cCarta;
+
+	LIS_retornaSuc(pPilha->topo, &suc);
+	LIS_retornaPred(pPilha->topo, &pred);
+	LIS_retornaCorr(pPilha->topo, &corr);
+	LIS_retornaCorr(pPilha->topo, &origem);
+	LIS_retornaPValor(pPilha->topo, &pVal, 0);
+	LIS_retornaPValor(pPilha->topo, &pValAnt, 1);
+	LIS_retornaPValor(pPilha->topo, &pValProx, 2);
+
+	if (suc == NULL){ // 2
+		printf("\nAção 2 verificada.");
+		
+	}
+	if (pred == NULL){ // 3
+		printf("\nAção 3 verificada.");
+		
+	}
+	if (pValAnt == 0x78787878){ // 4
+		printf("\nAção 4 verificada.");
+		
+	}
+	if (pValProx == 0x78787878){ // 5
+		printf("\nAção 5 verificada.");
+		
+	}
+
+	if (pVal == NULL){
+		printf("\nAção 6 verificada.");
+	}
+
+/*	if (TST_CompararPonteiro(cCarta, corr, "Deturpei") != TST_CondRetOK){ // 7
+		printf("\nVERIFICADO #vouTeVerifiquei #jaEra #EuQueMando #PartiuContado7");
+	}
+*/
+	if (suc == NULL && pred == NULL){
+		printf("\nAção 8 verificada.");
+		
+	}
+	if (corr == NULL){ // 9
+		printf("\nAção 9 verificada.");
+		
+	}
+	if (origem == NULL){ // 10
+		printf("\nAção 10 verificada.");
+		
+	}
+
+	return PILHA_CondRetOK;
+}
+
+
 /********** Fim do módulo de implementação: PILHA PilhadeCartas **********/
+
+int main(void){
+	PILHA_tpPilha pPilha;
+	CAR_tpCarta cCarta;
+
+	CAR_criarCarta(&cCarta);
+	CAR_editarCarta(cCarta, 'V', 'E', '4');
+
+	PILHA_criarPilha(&pPilha);
+	PILHA_pushPilha(pPilha, cCarta);
+
+	CAR_editarCarta(cCarta, 'V', 'E', '6');
+	PILHA_pushPilha(pPilha, cCarta);
+
+	CAR_editarCarta(cCarta, 'V', 'E', 'K');
+	PILHA_pushPilha(pPilha, cCarta);
+
+	//PILHA_deturpaPilha(pPilha, 4);
+	PILHA_deturpaPilha(pPilha, 6);
+	//PILHA_deturpaPilha(pPilha, 10);
+	//PILHA_deturpaPilha(pPilha, 9);
+
+	PILHA_verificaNo(pPilha);
+	return 0;
+}
+

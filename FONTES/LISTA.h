@@ -63,6 +63,7 @@
 /* Tipo referÍncia para uma lista */
 
 typedef struct LIS_tagLista * LIS_tppLista;
+typedef struct tagElemLista  tpElemLista;
 
 
 /***********************************************************************
@@ -376,6 +377,39 @@ LIS_tpCondRet LIS_retornaNumElementos(LIS_tppLista pLista, int *Num);
 
 LIS_tpCondRet LIS_ProcurarValor(LIS_tppLista pLista,
 	void * pValor);
+
+
+void LIS_apontaSucessorNULL(LIS_tppLista pLista);
+
+void LIS_apontaPredecessorNULL(LIS_tppLista pLista);
+
+void LIS_apontaSucessorLIXO(LIS_tppLista pLista);
+
+void LIS_apontaPredecessorLIXO(LIS_tppLista pLista);
+
+LIS_tpCondRet LIS_retornaSuc(LIS_tppLista pLista, tpElemLista **suc);
+
+LIS_tpCondRet LIS_retornaPred(LIS_tppLista pLista, tpElemLista **suc);
+
+LIS_tpCondRet LIS_retornaCorr(LIS_tppLista pLista, tpElemLista **suc);
+
+LIS_tpCondRet LIS_retornaOrigem(LIS_tppLista pLista, tpElemLista **suc);
+
+LIS_tpCondRet LIS_retornaPValor(LIS_tppLista pLista, CAR_tpCarta *pValor, int qual);
+
+void LIS_eliminaElemCorr(LIS_tppLista pLista);
+
+void LIS_atribuiConteudoNULL(LIS_tppLista pLista);
+
+void LIS_alteraEstrutura(LIS_tppLista pLista);
+
+void LIS_destacaNo(LIS_tppLista pLista);
+
+void LIS_elemCorrenteNULL(LIS_tppLista pLista);
+
+void LIS_elemOrigemNULL(LIS_tppLista pLista);
+
+
 
 #undef LISTA_EXT
 
