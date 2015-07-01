@@ -6,8 +6,12 @@
 //			  Pilha de Cartas.
 //
 
+==inicializando controladores
+=inicializarcontadores "."
+
 == Criar pilha numero 0
 =criarpilha      0 0
+
 
 == push pilha
 =pushpilha 0 'V' 'E' '4' 0
@@ -26,4 +30,3 @@
 
 ==Verifiano
 =verificarpilha 0 0
-

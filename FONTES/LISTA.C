@@ -28,6 +28,13 @@
 #include   <malloc.h>
 #include   <assert.h>
 #include   "PilhadeCartas.h"
+#ifdef _DEBUG
+#include "GENERICO.H"
+#include "cespdin.h"
+#include "CONTA.H"
+#include "IdTiposEspaco.def"
+#endif
+#pragma pack (1)
 
 #define LISTA_OWN
 #include "LISTA.h"
@@ -625,8 +632,12 @@ LIS_tpCondRet LIS_retornaNumElementos(LIS_tppLista pLista, int *Num){
 	}
 } /* Fim função: LIS  -Retorna Num Elementos */
 
+#ifdef _DEBUG
+
 void LIS_eliminaElemCorr(LIS_tppLista pLista){  // 1
-	LiberarElemento(pLista, pLista->pElemCorr);
+	CED_MarcarEspacoNaoAtivo(pLista->pElemCorr);
+	free(pLista->pElemCorr);
+	
 }
 
 void LIS_apontaSucessorNULL(LIS_tppLista pLista){  // 2
@@ -651,11 +662,7 @@ void LIS_atribuiConteudoNULL(LIS_tppLista pLista){ //Nao esta atribuindo o conte
 	pLista->pElemCorr->pValor = NULL;
 }
 
-void LIS_alteraEstrutura(LIS_tppLista pLista){  // 7
-	CAR_tpCarta cCarta;
-	CAR_criarCarta(&cCarta);
-	pLista->pElemCorr = (int) cCarta;
-}
+
 
 void LIS_destacaNo(LIS_tppLista pLista){  // 8
 	tpElemLista *L1;
@@ -741,6 +748,9 @@ LIS_tpCondRet LIS_retornaPValor(LIS_tppLista pLista, CAR_tpCarta *pValor, int qu
 	return LIS_CondRetOK;
 }
 
+
+
+#endif
 
 /********** Fim do módulo de implementação: LIS  Lista duplamente encadeada **********/
 

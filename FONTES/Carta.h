@@ -189,8 +189,13 @@ CAR_tpCondRet CAR_retornaFace(CAR_tpCarta pCarta, char* pFace);
 ***********************************************************************/
 CAR_tpCondRet CAR_imprimeCarta(CAR_tpCarta pCarta);
 
+#ifdef _DEBUG
 
+CAR_tpCondRet CAR_retornaTipo(CAR_tpCarta cCarta, char *tipo);
 
+CAR_tpCondRet CAR_setTipo(CAR_tpCarta cCarta, char tipo);
+
+#endif
 
 #undef CARTA_EXT /*NAO APAGAR*/
 

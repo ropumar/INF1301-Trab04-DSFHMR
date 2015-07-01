@@ -25,6 +25,14 @@
 
 #include <stdio.h>
 #include <malloc.h>
+#ifdef _DEBUG
+	#include "Generico.h"
+	#include "Conta.h"
+	#include "cespdin.h"
+	#include "IdTiposEspaco.def"
+#endif
+
+#pragma pack (1)
 
 #define CARTA_OWN
 #include "Carta.h"
@@ -45,6 +53,12 @@ int checarNaipe(char Naipe);
 *
 ***********************************************************************/
 struct carta{
+
+#ifdef _DEBUG
+	int tam;
+	int tipo;
+#endif
+
 	char face; /*V-> visivel, E->Escondida*/
 	char naipe; /*Indica qual naipe a carta pertence (P-> Paus, C-> Copas, E->Espadas, O-> Ouros)*/
 	char posicao; /*indica em qual posição de uma sequência completa a carta esta (A,2,3,4,5,6,7,8,9,10,J,Q,K)*/
@@ -70,6 +84,11 @@ CAR_tpCondRet CAR_criarCarta(CAR_tpCarta *pCarta){
 	(*pCarta)->face;
 	(*pCarta)->naipe;
 	(*pCarta)->posicao;
+
+#ifdef _DEBUG
+	(*pCarta)->tipo = 'c';
+	CED_MarcarEspacoAtivo(pCarta);
+#endif
 
 	return CAR_CondRetOK;
 
@@ -127,6 +146,8 @@ CAR_tpCondRet CAR_editarCarta(CAR_tpCarta pCarta, char NovaFace, char NovoNaipe,
 	pCarta->face = NovaFace;
 	pCarta->naipe = NovoNaipe;
 	pCarta->posicao = NovaPosicao;
+
+	
 	
 	return CAR_CondRetOK;
 
@@ -291,5 +312,23 @@ CAR_tpCondRet CAR_imprimeCarta(CAR_tpCarta pCarta){
 
 	return CAR_CondRetOK;
 }/* Fim função: CAR imprime Carta */
+
+#ifdef _DEBUG
+
+CAR_tpCondRet CAR_retornaTipo(CAR_tpCarta cCarta, char *tipo){
+	if (cCarta == NULL){
+		*tipo = NULL;
+		return CAR_CondRetCartaNaoExiste;
+	}
+	*tipo = cCarta->tipo;
+	return CAR_CondRetOK;
+}
+
+CAR_tpCondRet CAR_setTipo(CAR_tpCarta cCarta, char tipo){
+	cCarta->tipo = tipo;
+	return CAR_CondRetOK;
+}
+
+#endif
 
 /********** Fim do módulo de implementação: CAR Carta **********/

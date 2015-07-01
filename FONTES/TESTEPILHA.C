@@ -28,11 +28,20 @@
 
 #include    "TST_Espc.h"
 
-#include    "Generico.h"
+
 #include    "LerParm.h"
 
 #include    "Carta.h"
 #include	"PilhadeCartas.h"
+
+#ifdef _DEBUG
+#include "GENERICO.H"
+#include "cespdin.h"
+#include "CONTA.H"
+#include "IdTiposEspaco.def"
+#endif
+
+#pragma pack (1)
 
 
 #define CRIAR_PILHA_CMD         "=criarpilha"
@@ -44,12 +53,14 @@
 #define RETORNA_NUM_ELEM_CMD	"=retornanumelem"
 
 /* os comandos a seguir somente operam em modo _DEBUG */
+#ifdef _DEBUG
 
 const char VER_TOPO_CMD[] = "=verificarcabeca";
 const char VER_PILHA_CMD[] = "=verificarpilha";
 const char VER_MEMORIA_CMD[] = "=verificarmemoria";
 const char DETURPAR_CMD[] = "=deturpar";
 
+#endif
 
 PILHA_tpPilha nPilhas[10];
 
@@ -79,6 +90,8 @@ TST_tpCondRet TST_EfetuarComando(char * ComandoTeste)
 	char PosicaoEsperada = '1';
 	char PosicaoObtida = '2';
 	char PosicaoDada = '4';
+	
+	int numAlocAnt = CED_ObterNumeroEspacosAlocados();
 
 	/* Testar PILHA criarPilha */
 
@@ -205,6 +218,7 @@ TST_tpCondRet TST_EfetuarComando(char * ComandoTeste)
 
 	} /* fim ativa: Testar PILHA imprimePilha */
 
+#ifdef _DEBUG
 
 	else if (strcmp(ComandoTeste, DETURPAR_CMD) == 0)
 	{
@@ -215,13 +229,19 @@ TST_tpCondRet TST_EfetuarComando(char * ComandoTeste)
 			return TST_CondRetParm;
 		} /* if */
 
-		CondRetRecebida = PILHA_deturpaPilha(nPilhas[numeroPilha], acao);
+		if (acao == 1){
+			numAlocAnt = CED_ObterNumeroEspacosAlocados();
+		}
+
+		CondRetRecebida = PILHA_deturpaPilha(nPilhas[numeroPilha], acao, &numAlocAnt);
 
 		return TST_CompararInt(CondRetEsperada, CondRetRecebida, "Erro ao Deturpar a Pilha");
 
-	} /* fim ativa: Testar PILHA imprimePilha */
+	} /* fim ativa: Testar PILHA DeturpaPilha */
 
+#endif
 
+#ifdef _DEBUG
 
 	else if (strcmp(ComandoTeste, VER_PILHA_CMD) == 0)
 	{
@@ -232,12 +252,13 @@ TST_tpCondRet TST_EfetuarComando(char * ComandoTeste)
 			return TST_CondRetParm;
 		} /* if */
 
-		CondRetRecebida = PILHA_verificaNo(nPilhas[numeroPilha]);
+		CondRetRecebida = PILHA_verificaNo(nPilhas[numeroPilha], numAlocAnt);
 
 		return TST_CompararInt(CondRetEsperada, CondRetRecebida, "Erro ao Verificar a Pilha");
 
-	} /* fim ativa: Testar PILHA imprimePilha */
+	} /* fim ativa: Testar PILHA VerificaPilha */
 
+#endif
 
 	return TST_CondRetNaoConhec;
 

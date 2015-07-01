@@ -190,9 +190,19 @@ PILHA_tpCondRet PILHA_imprimePilha(PILHA_tpPilha pPilha);
 ***********************************************************************/
 PILHA_tpCondRet PILHA_retornaNumElem(PILHA_tpPilha pPilha, int *num);
 
-PILHA_tpCondRet PILHA_deturpaPilha (PILHA_tpPilha pPilha,int acao);
+#ifdef _DEBUG
 
-PILHA_tpCondRet PILHA_verificaNo(PILHA_tpPilha pPilha);
+PILHA_tpCondRet PILHA_deturpaPilha (PILHA_tpPilha pPilha,int acao, int *numAlocAnt);
+
+#endif
+
+#ifdef _DEBUG
+
+PILHA_tpCondRet PILHA_verificaNo(PILHA_tpPilha pPilha, int numAlocDps);
+
+#endif
+
+
 
 #undef PILHADECARTAS_EXT
 
